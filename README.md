@@ -24,7 +24,7 @@ You will need:
 - An AWS account
 - AWS CLI installed and configured
 
-### AWS Configuration
+### 1. AWS Configuration
 
 #### S3 Bucket
 
@@ -77,7 +77,7 @@ You will need:
 3. The CORS configuration required for Api is code inside Lambda Function, so no worries on that here.
 
 
-### Local Project Setup
+### 2. Local Project Setup
 
 1. Clone the project repository:
 
@@ -96,22 +96,6 @@ npm update
     - `App.js`: Manages UI and AWS SDK interactions for uploading files to S3 and displaying status.
     - `index.js`: Entry point of the React application.
 
-
-### 2. AWS Backend
-
-#### Task 1: S3 and DynamoDB Integration
-
-- **S3 Bucket**: Store uploaded files.
-- **DynamoDB Table**: Log file metadata.
-- **Lambda Function**: Triggered on file upload to S3, logs metadata in DynamoDB.
-
-#### Task 2: DynamoDB Stream Processing
-
-- **Lambda Function**: Monitors DynamoDB stream for new items and processes data accordingly.
-
-#### Task 3: Dynamic EC2 Processing
-
-- **Lambda Function**: Launches EC2 instances for intensive processing tasks based on DynamoDB updates.
 
 ## Deployment Flow
 
