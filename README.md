@@ -24,6 +24,7 @@ You will need:
 - An AWS account
 - AWS CLI installed and configured
 
+
 ### 1. AWS Configuration
 
 #### S3 Bucket
@@ -70,11 +71,12 @@ You will need:
 4. Also, create another Lambda Function and use the code (/Lambda/pocprocessdynamodbinsert/) as the code base.
 5. Assign an execution role for this Lambda Function that has permissions to write to DynamoDB and S3.
 
-#### Api Gateway
+#### API Gateway
 
 1. Set up an API Gateway to trigger the Lambda function.
 2. Create a REST and POST method connected to the Lambda.
 3. The CORS configuration required for Api is code inside Lambda Function, so no worries on that here.
+
 
 
 ### 2. Local Project Setup
@@ -95,6 +97,7 @@ npm update
 
     - `App.js`: Manages UI and AWS SDK interactions for uploading files to S3 and displaying status.
     - `index.js`: Entry point of the React application.
+
 
 
 ## Deployment Flow
