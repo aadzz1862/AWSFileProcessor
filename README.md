@@ -88,16 +88,15 @@ sh
 git clone https://github.com/your-username/react-s3-uploader.git
 cd react-s3-uploader/poc-react-app
 ```
-Update npm package using the below command.
+2. Update npm package using the below command.
+
 ```
 npm update
-
 ```
-
-
-    - `App.js`: Manages UI and AWS SDK interactions for uploading files to S3 and displaying status.
-    - `index.js`: Entry point of the React application.
-
+3. To start the application, run the below command.
+```
+npm start
+```
 
 
 ## Deployment Flow
