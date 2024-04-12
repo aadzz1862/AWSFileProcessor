@@ -1,0 +1,147 @@
+# This AWS SAM template has been generated from your function's configuration. If
+# your function has one or more triggers, note that the AWS resources associated
+# with these triggers aren't fully specified in this template and include
+# placeholder values. Open this template in AWS Application Composer or your
+# favorite IDE and modify it to specify a serverless application with other AWS
+# resources.
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: An AWS Serverless Application Model template describing your function.
+Resources:
+  pocprocessdynamodbinsert:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Description: ''
+      MemorySize: 128
+      Timeout: 120
+      Handler: lambda_function.lambda_handler
+      Runtime: python3.10
+      Architectures:
+        - x86_64
+      EphemeralStorage:
+        Size: 512
+      EventInvokeConfig:
+        DestinationConfig: {}
+        MaximumEventAgeInSeconds: 3600
+        MaximumRetryAttempts: 0
+      PackageType: Zip
+      Policies:
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:GetRecords
+                - dynamodb:GetShardIterator
+                - dynamodb:DescribeStream
+                - dynamodb:ListStreams
+              Resource: >-
+                arn:aws:dynamodb:us-east-2:730335433926:table/poctable/stream/2024-04-12T14:40:41.878
+            - Effect: Allow
+              Action:
+                - iam:PassRole
+              Resource: arn:aws:iam::730335433926:role/EC2S3AccessRole
+              Condition:
+                StringEquals:
+                  iam:PassedToService: ec2.amazonaws.com
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+              Resource: arn:aws:logs:us-east-2:730335433926:*
+            - Effect: Allow
+              Action:
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource:
+                - >-
+                  arn:aws:logs:us-east-2:730335433926:log-group:/aws/lambda/pocprocessdynamodbinsert:*
+            - Action:
+                - ec2:*
+              Effect: Allow
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - elasticloadbalancing:*
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - cloudwatch:*
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - autoscaling:*
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - iam:CreateServiceLinkedRole
+              Resource: '*'
+              Condition:
+                StringEquals:
+                  iam:AWSServiceName:
+                    - autoscaling.amazonaws.com
+                    - ec2scheduled.amazonaws.com
+                    - elasticloadbalancing.amazonaws.com
+                    - spot.amazonaws.com
+                    - spotfleet.amazonaws.com
+                    - transitgateway.amazonaws.com
+            - Effect: Allow
+              Action:
+                - ssm:Describe*
+                - ssm:Get*
+                - ssm:List*
+              Resource: '*'
+            - Effect: Allow
+              Action:
+                - s3:*
+                - s3-object-lambda:*
+              Resource: '*'
+      SnapStart:
+        ApplyOn: None
+      Events:
+        DynamoDB1:
+          Type: DynamoDB
+          Properties:
+            Stream:
+              Fn::GetAtt:
+                - Table1
+                - StreamArn
+            StartingPosition: LATEST
+            BatchSize: 1
+        DynamoDB2:
+          Type: DynamoDB
+          Properties:
+            Stream:
+              Fn::GetAtt:
+                - Table2
+                - StreamArn
+            StartingPosition: LATEST
+            BatchSize: 100
+      RuntimeManagementConfig:
+        UpdateRuntimeOn: Auto
+  Table1:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+  Table2:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
