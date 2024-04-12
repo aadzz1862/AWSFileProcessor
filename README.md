@@ -1,18 +1,6 @@
-# Getting Started with Create React App
+# Getting Started with AWS Full Stack File Processor
 
 This project demonstrates a full-stack application integrating a React front-end with various AWS services for backend processing. The workflow includes collecting user input text and file uploads through a React app, storing files in S3 logging metadata in DynamoDB, processing the data using Lambda and EC2 instances, append the input text into the input file, and finally uploading the output file into S3 while terminating the instance.
-
-## Prerequisites
-- Node.js (LTS version)
-- npm (typically installed with Node.js)
-- An AWS account
-- AWS CLI, configured with appropriate permissions.
-
-## Setup
-
-### 1. React Front-End
-
-# React S3 File Uploader
 
 This React application allows users to upload text and .txt files directly to an AWS S3 bucket via a user-friendly web interface.
 
@@ -89,10 +77,6 @@ You will need:
 3. The CORS configuration required for Api is code inside Lambda Function, so no worries on that here.
 
 
-
-
-
-
 ### Local Project Setup
 
 1. Clone the project repository:
@@ -113,8 +97,6 @@ npm update
     - `index.js`: Entry point of the React application.
 
 
-
-
 ### 2. AWS Backend
 
 #### Task 1: S3 and DynamoDB Integration
@@ -131,40 +113,20 @@ npm update
 
 - **Lambda Function**: Launches EC2 instances for intensive processing tasks based on DynamoDB updates.
 
-## Deployment & Usage
-
-### Front-End
+## Deployment Flow
 
 - Users upload files and input data via the React app. This information is then uploaded to S3, and corresponding metadata is logged to DynamoDB.
-
-### Back-End
-
-- **S3 Uploads**: Trigger Lambda functions to log file metadata in DynamoDB.
-- **DynamoDB Updates**: Trigger Lambda functions or EC2 instances for further processing.
+- The upload to S3 triggers Lambda function to log file metadata in DynamoDB.
+- The insert into DynamoDB triggers the second Lambda function to run the script stored in S3, which then initiate EC2 instances for further processing.
 
 ## Troubleshooting & Logging
 
-- **AWS CloudWatch**: Essential for monitoring Lambda executions, EC2 instance status, and debugging issues.
-- **IAM Roles**: Ensure all AWS services (Lambda, EC2, S3, DynamoDB) have roles with appropriate permissions.
-- **React Developer Tools**: Useful for debugging front-end issues.
+- AWS CloudWatch: Essential for monitoring Lambda executions, EC2 instance status, and debugging issues.
+- IAM Roles: Ensure all AWS services (Lambda, EC2, S3, DynamoDB) have roles with appropriate permissions.
+- React Developer Tools: Useful for debugging front-end issues.
 
 
 ## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
 
 ### `npm run build`
 
@@ -174,44 +136,3 @@ It correctly bundles React in production mode and optimizes the build for the be
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
