@@ -55,6 +55,31 @@ This folder contains a user data script `user_data_script.sh` that is executed b
 This folder contains cod for the frontend React.js application.
 
 
+## Build and Deployment
+This section details how to build and run the project:
+
+### Dependencies: 
+
+- Node.js (LTS version)
+- npm (typically installed with Node.js)
+- An AWS account
+- AWS CLI installed and configured
+
+This project is tested on the below software configurations
+
+`NodeJS v21.7.3, NPM 10.5.2, react-js 17.0.2, aws-cli 2.15.37 Python 3.11.9`
+
+`Python 3.10, nanoid 2.0.0 for lambda functions`
+
+
+### Build Instructions: 
+
+Provide step-by-step instructions to build the project.
+
+### Run Instructions: 
+
+Explain how to run the project locally.
+
 ## Setup
 
 To get this project running on your local machine, follow these detailed steps.
