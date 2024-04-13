@@ -133,9 +133,130 @@ Bucket Policy
 }
 
 ```
-   
+
+#### AWS Systems Manager Parameter Store
+
+AWS Systems Manager Parameter Store is used stored the configurations for lambda. This prevent hardcoding the parameter values in the code.
+
+<img width="1048" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/42c8d5e7-6487-4d61-86b1-3bbc68b33daa">
+
+<img width="1037" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/c774790d-f00d-4290-af15-225a9cca76c3">
 
 ##### AWS Lambda
+
+The coniguration of Lambdas used in this applcition is as below.
+
+generatesignedurl
+
+This lambda is for generating the signed url for s3 bucket with a short expiry time so the s3 bucket is not exposed to public and the applciation get only momentary access to upload the file using the signed url. this make the S3 bucket highly secure.
+
+<img width="795" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/2dcef3e1-8391-4e6f-a364-0102795c0dcf">
+
+Create the lambda using the pyhton code from `Lambda/generatesignedurl/lambda_function.py`
+
+Detailed configuration for this lamba is availbe on the yaml file `generatesignedurl.yaml`
+
+```
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::pocprojectbucket/*",
+    }
+  ]
+}
+
+```
+
+pocprocessdynamodbinsert
+
+This lambda is to create a new VM automatically and triggered when a new record is inserted into DynamoDb table `poctable`
+
+<img width="769" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/a81a012d-67c4-4048-875c-37b69d01a78c">
+
+
+Create the lambda using the pyhton code from `Lambda/pocprocessdynamodbinsert/lambda_function.py`
+
+Detailed configuration for this lamba is availbe on the yaml file `pocprocessdynamodbinsert.yaml`
+
+Add the below permisssion for this lamda roles in IAM
+
+<img width="817" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/81a6f957-dc0a-4357-9843-766724edac84">
+
+dynamodbreadstream 
+
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Effect": "Allow",
+			"Action": [
+				"dynamodb:GetRecords",
+				"dynamodb:GetShardIterator",
+				"dynamodb:DescribeStream",
+				"dynamodb:ListStreams"
+			],
+			"Resource": "arn:aws:dynamodb:us-east-2:730335433926:table/poctable/stream/2024-04-12T14:40:41.878"
+		}
+	]
+}
+
+```
+
+EC2InstancePassRolePolicy
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "iam:PassRole",
+            "Resource": "arn:aws:iam::730335433926:role/EC2S3AccessRole",
+            "Condition": {
+                "StringEquals": {
+                    "iam:PassedToService": "ec2.amazonaws.com"
+                }
+            }
+        }
+    ]
+}
+```
+
+pocuploadfunction
+
+This lambda is to store the fiename and and s3 file path to the DynamoDB table `poctable`
+
+<img width="803" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/28dcaa70-7af4-4953-9786-a18f5c23db76">
+
+
+Create the lambda using the pyhton code from `Lambda/pocuploadfunction/lambda_function.py`
+
+Detailed configuration for this lamba is availbe on the yaml file `pocuploadfunction.yaml`
+
+This lambda have a layer created for the dependecy package for nanoid 2.0.0 python package
+
+<img width="1580" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/2ebd7657-0935-4a98-b6f7-cc4642705c35">
+
+Add the below permisssion for this lamda roles in IAM
+
+```
+{
+	"Version": "2012-10-17",
+	"Statement": [
+		{
+			"Sid": "VisualEditor0",
+			"Effect": "Allow",
+			"Action": "dynamodb:PutItem",
+			"Resource": "arn:aws:dynamodb:us-east-2:730335433926:table/poctable"
+		}
+	]
+}
+```
 
 ##### DynamoDB
 
