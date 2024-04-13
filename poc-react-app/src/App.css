@@ -15,14 +15,12 @@
 
 .App-header {
   background-color: #02163d;
-  /* min-height: 100vh; Remove or comment out this line */
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   font-size: calc(10px + 1vmin);
   color: white;
-  /* padding: 20px; /* Add padding to ensure some space around the content */
 }
 
 .App-link {
@@ -42,9 +40,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align to the top */
+  justify-content: flex-start; 
   
-  margin: 20px; /* Adjust the margin value as needed */
+  margin: 20px; 
 }
 
 .form-box {
