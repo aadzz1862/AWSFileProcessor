@@ -72,11 +72,9 @@ This project is tested on the below software configurations
 `Python 3.10, nanoid 2.0.0 for lambda functions`
 
 
-### Build Instructions: 
+### AWS Setup
 
-#### AWS Setup
-
-##### S3 Buckets
+#### S3 Buckets
 
 I'm using two s3 buckets on this application
 
@@ -138,19 +136,20 @@ Bucket Policy
 
 AWS Systems Manager Parameter Store is used stored the configurations for lambda. This prevent hardcoding the parameter values in the code.
 
-<img width="1048" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/42c8d5e7-6487-4d61-86b1-3bbc68b33daa">
+<img width="600" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/42c8d5e7-6487-4d61-86b1-3bbc68b33daa">
 
-<img width="1037" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/c774790d-f00d-4290-af15-225a9cca76c3">
 
-##### AWS Lambda
+<img width="500" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/c774790d-f00d-4290-af15-225a9cca76c3">
+
+#### AWS Lambda Functions
 
 The coniguration of Lambdas used in this applcition is as below.
 
-generatesignedurl
+##### 1. Lambda function `generatesignedurl`
 
 This lambda is for generating the signed url for s3 bucket with a short expiry time so the s3 bucket is not exposed to public and the applciation get only momentary access to upload the file using the signed url. this make the S3 bucket highly secure.
 
-<img width="795" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/2dcef3e1-8391-4e6f-a364-0102795c0dcf">
+<img width="400" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/2dcef3e1-8391-4e6f-a364-0102795c0dcf">
 
 Create the lambda using the pyhton code from `Lambda/generatesignedurl/lambda_function.py`
 
@@ -171,11 +170,11 @@ Detailed configuration for this lamba is availbe on the yaml file `generatesigne
 
 ```
 
-pocprocessdynamodbinsert
+##### 2. Lambda function `pocprocessdynamodbinsert`
 
 This lambda is to create a new VM automatically and triggered when a new record is inserted into DynamoDb table `poctable`
 
-<img width="769" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/a81a012d-67c4-4048-875c-37b69d01a78c">
+<img width="400" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/a81a012d-67c4-4048-875c-37b69d01a78c">
 
 
 Create the lambda using the pyhton code from `Lambda/pocprocessdynamodbinsert/lambda_function.py`
@@ -184,7 +183,7 @@ Detailed configuration for this lamba is availbe on the yaml file `pocprocessdyn
 
 Add the below permisssion for this lamda roles in IAM
 
-<img width="817" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/81a6f957-dc0a-4357-9843-766724edac84">
+<img width="500" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/81a6f957-dc0a-4357-9843-766724edac84">
 
 dynamodbreadstream 
 
@@ -227,11 +226,11 @@ EC2InstancePassRolePolicy
 }
 ```
 
-pocuploadfunction
+##### 2. Lambda function `pocuploadfunction`
 
 This lambda is to store the fiename and and s3 file path to the DynamoDB table `poctable`
 
-<img width="803" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/28dcaa70-7af4-4953-9786-a18f5c23db76">
+<img width="400" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/28dcaa70-7af4-4953-9786-a18f5c23db76">
 
 
 Create the lambda using the pyhton code from `Lambda/pocuploadfunction/lambda_function.py`
@@ -258,7 +257,7 @@ Add the below permisssion for this lamda roles in IAM
 }
 ```
 
-##### DynamoDB
+#### DynamoDB
 
 1. Create a DynamoDB table named `poctable`
 2. For the Partition key, enter `id` and select the type as `String`. This will be the unique identifier for each record.
@@ -273,90 +272,31 @@ Create an IAM Role Policy for AWS Lambda pocprocessdynamodbinsert
 <img width="600" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/7d5ec9cb-fe8e-4c55-a66f-14ea57fa7a4b">
 
 
-##### API Gateway
-
-
-
-### Run Instructions: 
-
-Explain how to run the project locally.
-
-## Setup
-
-To get this project running on your local machine, follow these detailed steps.
-
-### Prerequisites
-
-You will need:
-
-- Node.js (LTS version)
-- npm (typically installed with Node.js)
-- An AWS account
-- AWS CLI installed and configured
-
-
-### 1. AWS Configuration
-
-#### S3 Bucket
-
-1. Create an S3 bucket via the AWS Management Console.
-2. Update the bucket policy to allow public reads and set up CORS (given below) to allow requests from your domain.
-```
-[
-    {
-        "AllowedHeaders": [
-            "*"
-        ],
-        "AllowedMethods": [
-            "PUT",
-            "POST",
-            "GET"
-        ],
-        "AllowedOrigins": [
-            "http://localhost:3000"
-        ],
-        "ExposeHeaders": []
-    }
-]
-```
-
-#### Cognito Identity Pool
-
-1. Create a new identity pool in AWS Cognito.
-2. Enable access to unauthenticated identities.
-3. Associate the identity pool with an IAM role (If you don't have any create a new one with the name you like).
-4. Make sure that this IAM role have permission to put objects in your S3 bucket.
-
-#### DynamoDB
-1. Create a DynamoDB table named `poctable`
-2. For the Partition key, enter `id` and select the type as `String`. This will be the unique identifier for each record.
-3. Click "Create" to provision the new table.
-    - Note: The actual `id` values will be generated by the Lambda function using the `nanoid` library when new records are inserted, ensuring each entry is unique.
-
-#### Lambda Function
-
-1. Create a Lambda function in AWS.
-2. Use the provided in `lambda_function.py` (/Lambda/pocuploadfunction/) as the code base.
-3. Assign an execution role for this Lambda Function that has permissions to write to DynamoDB and S3.
-4. Also, create another Lambda Function and use the code (/Lambda/pocprocessdynamodbinsert/) as the code base.
-5. Assign an execution role for this Lambda Function that has permissions to write to DynamoDB and S3.
-
 #### API Gateway
 
 1. Set up an API Gateway to trigger the Lambda function.
 2. Create a REST and POST method connected to the Lambda.
 3. The CORS configuration required for Api is code inside Lambda Function, so no worries on that here.
 
+I'm using two APIs implemented with API Gateway
+
+1.Save the inputs and S3 path in DynamoDB FileTable via API gateway and Lambda Function pocuploadfunction
+
+<img width="600" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/6555e25e-644e-4f82-8a32-5e89727ed4e2">
 
 
-### 2. Local Project Setup
+2.Generate a S3 Signed url via API gateway and Lambda Function generatesignedurl
 
-1. Clone the project repository:
+<img width="600" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/3eb754e7-693a-48b4-8f69-9d2100566d5e">
+
+
+### Run Instructions: 
+
+1. Clone the project repository 
 
 ```
-sh
-git clone https://github.com/your-username/react-s3-uploader.git
-cd react-s3-uploader/poc-react-app
+git clone https://github.com/aadzz1862/AWSFileProcessor.git
+cd /AWSFileProcessor/poc-react-app
 ```
 2. Update npm package using the below command.
 
@@ -367,6 +307,10 @@ npm update
 ```
 npm start
 ```
+The applciation will open in the browser 
+
+<img width="500" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/7bf95971-746c-4689-9cc8-050717a6302d">
+
 
 
 ## Deployment Flow
@@ -377,12 +321,16 @@ npm start
 
 ## Troubleshooting & Logging
 
-- AWS CloudWatch: Essential for monitoring Lambda executions, EC2 instance status, and debugging issues.
+- AWS CloudWatch is integrated with Lamda functions, API Gateway and EC2
+
+  <img width="600" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/786d276e-07b7-4fd3-822d-492e74abc074">
+
 - IAM Roles: Ensure all AWS services (Lambda, EC2, S3, DynamoDB) have roles with appropriate permissions.
 - React Developer Tools: Useful for debugging front-end issues.
 
 
-## BONUS
+
+## Bonus
 
 ### `S3 Web Hosting`
 
