@@ -6,10 +6,12 @@ This React application allows users to upload text and .txt files directly to an
 
 ## Features
 
-- Responsive UI built with ReactJS.
-- Text input for user-entered data.
-- File input for uploading .txt files.
-- Direct file uploads to AWS S3 using pre-signed URLs for enhanced security.
+- Interface designed responsively using ReactJS.
+- Secure file transfers to AWS S3 facilitated through pre-signed URLs.
+- Configuration data managed via AWS Systems Manager Parameter Store.
+- On-demand provisioning and termination of EC2 instances for extensive file operations.
+- Loosely coupled modular integration across various AWS service offerings.
+- API management using Amazon API Gateway
 
 ## Directory Structure
 
@@ -67,7 +69,7 @@ This section details how to build and run the project:
 
 This project is tested on the below software configurations
 
-`NodeJS v21.7.3, NPM 10.5.2, react-js 17.0.2, aws-cli 2.15.37 Python 3.11.9`
+`NodeJS v21.7.3, NPM 10.5.2, react-js 17.0.2, aws-cli 2.15.37`
 
 `Python 3.10, nanoid 2.0.0 for lambda functions`
 
