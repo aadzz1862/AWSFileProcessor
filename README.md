@@ -114,12 +114,11 @@ npm start
 
 ## BONUS
 
-### `npm run build`
+### `S3 Web Hosting`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+The frontend code is deployed to S3 as a static website. 
+http://fileprocessorapp.s3-website.us-east-2.amazonaws.com
 
-Your app is ready to be deployed!
 
 ## References
 
@@ -128,3 +127,4 @@ Your app is ready to be deployed!
 3. [Enabling CORS by API console](https://docs.aws.amazon.com/apigateway/latest/developerguide/how-to-cors-console.html)
 4. [nanoid id, read the full docs if you don't have prior experience](https://www.npmjs.com/package/nanoid)
 5. [Building lambda with Python](https://docs.aws.amazon.com/lambda/latest/dg/lambda-python.html)
+6. [Hosting a static website using Amazon S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html)
