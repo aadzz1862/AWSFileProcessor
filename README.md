@@ -4,6 +4,8 @@ This project demonstrates a full-stack application integrating a React front-end
 
 This React application allows users to upload text and .txt files directly to an AWS S3 bucket via a user-friendly web interface.
 
+**Application Demo Video** https://youtu.be/I8JIUZrOOcQ
+
 ## Features
 
 - Interface designed responsively using ReactJS.
@@ -313,7 +315,7 @@ The applciation will open in the browser
 
 <img width="500" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/7bf95971-746c-4689-9cc8-050717a6302d">
 
-
+**Application Demo Video** https://youtu.be/I8JIUZrOOcQ
 
 ## Deployment Flow
 
