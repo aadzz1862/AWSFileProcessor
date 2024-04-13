@@ -1,7 +1,5 @@
-// src/components/UploadForm.js
 
 import React, { useState } from 'react';
-// import AWS from 'aws-sdk';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import axios from 'axios';
@@ -21,14 +19,11 @@ const UploadForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedFile) {
-
-      const bucket_name = 'pocprojectbucket';
-
       const apiGatewayUrl_SignedUrl = 'https://35v451qfkc.execute-api.us-east-2.amazonaws.com/dev/s3-signedurl';
+      const apiGatewayUrl_fileinfo = 'https://08lgx212oh.execute-api.us-east-2.amazonaws.com/dev/fileprocessor';
       const apiKey = '1L1KKXWm3X3IBbuvsmBn55t8gH0JQdzl2OIB5rxe'; 
 
       try {
-
         // Define headers for the request
         const config = {
           headers: {
@@ -46,7 +41,6 @@ const UploadForm = () => {
           return response.data.url;
         };
 
-
         const uploadFile = async (file) => {
           const url = await getSignedUrl(file.name, file.type);
 
@@ -56,7 +50,6 @@ const UploadForm = () => {
             body: file,
           });
 
-
         };
 
         uploadFile(selectedFile);
@@ -65,12 +58,6 @@ const UploadForm = () => {
         toast.success('File uploaded successfully !', {
           autoClose: 3000, // Close after 3 seconds
         });
-
-        const s3Path = `s3://${bucket_name }/${selectedFile.name}`;
-
-        
-        const apiGatewayUrl_fileinfo = 'https://08lgx212oh.execute-api.us-east-2.amazonaws.com/dev/fileprocessor';
-        
 
         const apiResponse = await fetch(apiGatewayUrl_fileinfo, {
           method: 'POST',
@@ -90,7 +77,6 @@ const UploadForm = () => {
 
         const apiData = await apiResponse.json();
         console.log('Data saved to DynamoDB:', apiData);
-        // alert('File information saved successfully!');
 
         // Show success notification
         toast.success('Input information saved successfully!', {
