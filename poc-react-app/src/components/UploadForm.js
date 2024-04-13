@@ -1,9 +1,10 @@
 // src/components/UploadForm.js
 
 import React, { useState } from 'react';
-import AWS from 'aws-sdk';
+// import AWS from 'aws-sdk';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
 
 const UploadForm = () => {
   const [inputText, setInputText] = useState('');
@@ -20,19 +21,46 @@ const UploadForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (selectedFile) {
-      const s3 = new AWS.S3();
 
       const bucket_name = 'pocprojectbucket';
 
+      const apiGatewayUrl_SignedUrl = 'https://35v451qfkc.execute-api.us-east-2.amazonaws.com/dev/s3-signedurl';
+      const apiKey = '1L1KKXWm3X3IBbuvsmBn55t8gH0JQdzl2OIB5rxe'; 
 
       try {
-        const uploadResponse = await s3.upload({
-          Bucket: bucket_name , 
-          Key: selectedFile.name, 
-          Body: selectedFile, 
-        }).promise();
 
-        // alert('File uploaded successfully to: ' + uploadResponse.Location);
+        // Define headers for the request
+        const config = {
+          headers: {
+              'x-api-key': apiKey, 
+              'Content-Type': 'application/json' 
+          }
+        };
+
+        const getSignedUrl = async (fileName, contentType) => {
+          const response = await axios.post(apiGatewayUrl_SignedUrl, {
+            fileName,
+            contentType
+          }, config);
+
+          return response.data.url;
+        };
+
+
+        const uploadFile = async (file) => {
+          const url = await getSignedUrl(file.name, file.type);
+
+          // PUT request: upload file to S3
+          const result = await fetch(url, {
+            method: "PUT",
+            body: file,
+          });
+
+
+        };
+
+        uploadFile(selectedFile);
+
         // Show success notification
         toast.success('File uploaded successfully !', {
           autoClose: 3000, // Close after 3 seconds
@@ -40,13 +68,15 @@ const UploadForm = () => {
 
         const s3Path = `s3://${bucket_name }/${selectedFile.name}`;
 
-        const apiGatewayUrl = 'https://08lgx212oh.execute-api.us-east-2.amazonaws.com/dev/fileprocessor';
+        
+        const apiGatewayUrl_fileinfo = 'https://08lgx212oh.execute-api.us-east-2.amazonaws.com/dev/fileprocessor';
+        
 
-        const apiResponse = await fetch(apiGatewayUrl, {
+        const apiResponse = await fetch(apiGatewayUrl_fileinfo, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-api-key': '1L1KKXWm3X3IBbuvsmBn55t8gH0JQdzl2OIB5rxe',
+            'x-api-key': apiKey,
           },
           body: JSON.stringify({
             input_text: inputText, 

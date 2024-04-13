@@ -3,15 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import AWS from 'aws-sdk';
+//import AWS from 'aws-sdk';
 
 // Configure AWS SDK
-AWS.config.update({
+/*AWS.config.update({
   region: 'us-east-2',
   credentials: new AWS.CognitoIdentityCredentials({
     IdentityPoolId: 'us-east-2:a2137492-bd00-4503-bd06-6163befb842e' 
   })
-});
+}); */
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
