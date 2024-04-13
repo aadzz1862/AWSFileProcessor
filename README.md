@@ -13,7 +13,7 @@ This React application allows users to upload text and .txt files directly to an
 - Loosely coupled modular integration across various AWS service offerings.
 - API management using Amazon API Gateway
 
-## Directory Structure
+## Project Directory Structure
 
 ```
 /
