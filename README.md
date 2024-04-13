@@ -11,6 +11,50 @@ This React application allows users to upload text and .txt files directly to an
 - File input for uploading .txt files.
 - Direct file uploads to AWS S3 using pre-signed URLs for enhanced security.
 
+## Directory Structure
+
+```
+/
+├── Lambda/
+│   ├── generatesignedurl/
+│   │   ├── generatesignedurl.yaml
+│   │   └── lambda_function.py
+│   ├── pocprocessdynamodbinsert/
+│   │   ├── pocprocessdynamodbinsert.yaml
+│   │   └── lambda_function.py
+│   └── pocuploadfunction/
+│       ├── pocuploadfunction.yaml
+│       └── lambda_function.py
+├── Scripts/
+│   └── user_data_script.sh
+└── poc-react-app/
+    ├── public/
+    ├── src/
+    ├── .gitignore
+    ├── package-lock.json
+    ├── package.json
+    └── README.md
+
+```
+
+#### Lambda 
+This folder contains source code for the three lambda fuctions used in this project. 
+
+`generatesignedurl` : This Lambda function creates a signed URL to facilitate secure uploads of files to the S3 bucket, ensuring the uploaded files remain private.
+
+`pocprocessdynamodbinsert` : This Lambda function activates upon the insertion of a record in the DynamoDB table, launching an EC2 instance to process the file that has been uploaded. A user data script, containing the logic for appending the input text, is executed by this EC2 instance, which the Lambda function supplies along with the required input parameters.
+
+`pocuploadfunction` : The Lambda function serves the purpose of transmitting the file name and its corresponding S3 path to a DynamoDB table, where this information is recorded and stored.
+
+#### Scripts 
+
+This folder contains a user data script `user_data_script.sh` that is executed by an EC2 instance generated on-demand. The script is responsible for processing the file, retrieving file information from the DynamoDB table, and subsequently uploading the outcomes back to the DynamoDB table.
+
+#### poc-react-app 
+
+This folder contains cod for the frontend React.js application.
+
+
 ## Setup
 
 To get this project running on your local machine, follow these detailed steps.
