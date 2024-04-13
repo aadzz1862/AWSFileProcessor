@@ -54,7 +54,7 @@ This folder contains a user data script `user_data_script.sh` that is executed b
 
 #### poc-react-app 
 
-This folder contains cod for the frontend React.js application.
+This folder contains code for the frontend React.js application.
 
 
 ## Build and Deployment
@@ -107,7 +107,7 @@ Cross-origin resource sharing (CORS) for this bucket
 ```
    
 
-2. Another s3 bucket called 'fileprocessorapp' is used to host the react-js applciation. This bucket is publically accessible.
+2. Another s3 bucket called 'fileprocessorapp' is used to host the frontend code. This bucket is publically accessible.
 
    <img width="1318" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/dbdc23fc-8a4a-40a1-a852-170680524b18">
 
@@ -149,13 +149,13 @@ The coniguration of Lambdas used in this applcition is as below.
 
 ##### 1. Lambda function `generatesignedurl`
 
-This lambda is for generating the signed url for s3 bucket with a short expiry time so the s3 bucket is not exposed to public and the applciation get only momentary access to upload the file using the signed url. this make the S3 bucket highly secure.
+This lambda is for generating the signed url for s3 bucket with a short expiry time so the s3 bucket is not exposed to public and the applciation get only momentary access to upload the file using the signed url. This make the S3 bucket highly secure.
 
 <img width="400" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/2dcef3e1-8391-4e6f-a364-0102795c0dcf">
 
 Create the lambda using the pyhton code from `Lambda/generatesignedurl/lambda_function.py`
 
-Detailed configuration for this lamba is availbe on the yaml file `generatesignedurl.yaml`
+Detailed configuration for this lambda is available on the yaml file `generatesignedurl.yaml`
 
 ```
 {
@@ -181,9 +181,9 @@ This lambda is to create a new VM automatically and triggered when a new record 
 
 Create the lambda using the pyhton code from `Lambda/pocprocessdynamodbinsert/lambda_function.py`
 
-Detailed configuration for this lamba is availbe on the yaml file `pocprocessdynamodbinsert.yaml`
+Detailed configuration for this lambda is available on the yaml file `pocprocessdynamodbinsert.yaml`
 
-Add the below permisssion for this lamda roles in IAM
+Add the below permisssion for this lamdda roles in IAM
 
 <img width="500" alt="image" src="https://github.com/aadzz1862/AWSFileProcessor/assets/86231542/81a6f957-dc0a-4357-9843-766724edac84">
 
@@ -237,7 +237,7 @@ This lambda is to store the fiename and and s3 file path to the DynamoDB table `
 
 Create the lambda using the pyhton code from `Lambda/pocuploadfunction/lambda_function.py`
 
-Detailed configuration for this lamba is availbe on the yaml file `pocuploadfunction.yaml`
+Detailed configuration for this lamba is available on the yaml file `pocuploadfunction.yaml`
 
 This lambda have a layer created for the dependecy package for nanoid 2.0.0 python package
 
@@ -336,8 +336,9 @@ The applciation will open in the browser
 
 ### `S3 Web Hosting`
 
-The frontend code is deployed to S3 as a static website. 
-http://fileprocessorapp.s3-website.us-east-2.amazonaws.com
+The frontend code has been deployed to S3 for hosting as a static website.
+
+You can access the application by clicking on the following link --> [AWS File Uploader App](http://fileprocessorapp.s3-website.us-east-2.amazonaws.com)
 
 
 ## References
